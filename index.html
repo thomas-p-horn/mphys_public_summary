@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AGN Quest | Learn AGN Physics Basics</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="top-bar card">
+      <h1>AGN Quest</h1>
+      <p class="subtitle">A Duolingo-style mini course for Active Galactic Nuclei (AGN) basics.</p>
+      <div class="stats-row">
+        <div class="stat"><span>Lesson</span><strong id="lessonLabel">1 / 2</strong></div>
+        <div class="stat"><span>Question</span><strong id="questionLabel">1 / 8</strong></div>
+        <div class="stat"><span>Streak</span><strong id="streakLabel">0</strong></div>
+      </div>
+      <div class="progress-wrap">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+    </header>
+
+    <section id="introScreen" class="card screen active">
+      <h2>Welcome, explorer 👋</h2>
+      <p>
+        You will complete <strong>2 short AGN lessons</strong> through fill-in-the-blank prompts, quick concept checks,
+        and sentence completions.
+      </p>
+      <ul>
+        <li>Estimated time: <strong>5–10 minutes</strong></li>
+        <li>Goal: learn the core AGN words and ideas</li>
+        <li>No prior astronomy required</li>
+      </ul>
+      <button id="startBtn" class="btn btn-primary">Start Learning</button>
+    </section>
+
+    <section id="quizScreen" class="card screen" aria-live="polite">
+      <div class="pill" id="typeBadge">Fill in the blank</div>
+      <h2 id="promptText"></h2>
+      <p id="hintText" class="hint"></p>
+
+      <div id="inputArea"></div>
+
+      <div class="actions">
+        <button id="checkBtn" class="btn btn-primary">Check</button>
+        <button id="nextBtn" class="btn btn-secondary" disabled>Next</button>
+      </div>
+      <p id="feedbackText" class="feedback"></p>
+    </section>
+
+    <section id="summaryScreen" class="card screen">
+      <h2>Great job! 🎉</h2>
+      <p id="summaryText"></p>
+      <div class="recap">
+        <h3>Key AGN terms you practiced</h3>
+        <ul>
+          <li>Accretion disk</li>
+          <li>Supermassive black hole</li>
+          <li>Broad-line region (BLR)</li>
+          <li>Narrow-line region (NLR)</li>
+          <li>Dusty torus</li>
+          <li>Relativistic jets</li>
+          <li>Eddington limit</li>
+          <li>Seyfert, quasar, blazar</li>
+        </ul>
+      </div>
+      <button id="restartBtn" class="btn btn-primary">Play Again</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
