@@ -115,6 +115,10 @@ body {
   border-radius: 10px;
   padding: 0.7rem;
   text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
   font-size: 1rem;
   cursor: pointer;
 }
@@ -123,6 +127,48 @@ body {
 .option-btn.selected {
   border-color: var(--blue);
   background: #f0f9ff;
+}
+
+.option-btn.correct-selected {
+  border: 2px solid var(--ok);
+  background: rgba(22, 163, 74, 0.14);
+}
+
+.option-btn.incorrect-selected {
+  border: 2px solid var(--danger);
+  background: rgba(239, 68, 68, 0.14);
+}
+
+.option-btn.correct-outline {
+  border: 2px solid var(--ok);
+}
+
+.option-btn.correct-selected:hover,
+.option-btn.incorrect-selected:hover,
+.option-btn.correct-outline:hover {
+  background: #fff;
+}
+
+.option-btn.correct-selected:hover {
+  background: rgba(22, 163, 74, 0.14);
+}
+
+.option-btn.incorrect-selected:hover {
+  background: rgba(239, 68, 68, 0.14);
+}
+
+.option-result-tag {
+  font-weight: 700;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.option-result-tag.ok {
+  color: var(--ok);
+}
+
+.option-result-tag.bad {
+  color: var(--danger);
 }
 
 .text-input {
@@ -149,7 +195,9 @@ body {
 
 .btn:disabled {
   cursor: not-allowed;
-  opacity: 0.65;
+  opacity: 1;
+  background: #e5e7eb;
+  color: #6b7280;
 }
 
 .btn-primary {
@@ -162,8 +210,12 @@ body {
 }
 
 .btn-secondary {
-  background: #eef2f7;
-  color: #111827;
+  background: var(--green);
+  color: #fff;
+}
+
+.btn-secondary:hover:enabled {
+  background: var(--green-dark);
 }
 
 .feedback {

@@ -146,6 +146,7 @@ const progressBar = document.getElementById("progressBar");
 const summaryText = document.getElementById("summaryText");
 const checkBtn = document.getElementById("checkBtn");
 const nextBtn = document.getElementById("nextBtn");
+const actions = document.querySelector(".actions");
 
 const startBtn = document.getElementById("startBtn");
 const restartBtn = document.getElementById("restartBtn");
@@ -188,6 +189,22 @@ function renderQuestion() {
   nextBtn.disabled = true;
 
   const q = currentQuestion();
+  if (q.type === "blank") {
+    quizScreen.insertBefore(feedbackText, actions);
+  } else {
+    quizScreen.appendChild(feedbackText);
+  }
+
+  if (q.type === "blank") {
+    checkBtn.style.display = "inline-block";
+    checkBtn.disabled = true;
+    nextBtn.style.display = "none";
+  } else {
+    checkBtn.style.display = "none";
+    checkBtn.disabled = false;
+    nextBtn.style.display = "inline-block";
+  }
+
   typeBadge.textContent = q.badge;
   promptText.textContent = q.prompt;
   hintText.textContent = `Hint: ${q.hint}`;
@@ -201,6 +218,10 @@ function renderQuestion() {
 
   if (q.type === "blank") {
     inputArea.innerHTML = '<input class="text-input" id="answerInput" type="text" autocomplete="off" placeholder="Type your answer..." />';
+    const answerInput = document.getElementById("answerInput");
+    answerInput.addEventListener("input", () => {
+      checkBtn.disabled = normalize(answerInput.value) === "";
+    });
   } else {
     const optionsHtml = q.options
       .map((option) => `<button class="option-btn" type="button">${option}</button>`)
@@ -212,22 +233,49 @@ function renderQuestion() {
         inputArea.querySelectorAll(".option-btn").forEach((b) => b.classList.remove("selected"));
         btn.classList.add("selected");
         selectedOption = btn.textContent;
+        checkAnswer();
       });
     });
   }
 }
 
 function markFeedback(correct, q) {
+  if (q.type === "multiple") {
+    const normalizedSelected = normalize(selectedOption || "");
+    const normalizedAnswer = normalize(q.answer);
+
+    inputArea.querySelectorAll(".option-btn").forEach((btn) => {
+      const optionText = normalize(btn.textContent || "");
+      btn.disabled = true;
+      btn.classList.remove("selected");
+
+      if (optionText === normalizedAnswer) {
+        btn.classList.add("correct-outline");
+      }
+
+      if (optionText === normalizedSelected) {
+        btn.classList.add(correct ? "correct-selected" : "incorrect-selected");
+        const resultTag = document.createElement("span");
+        resultTag.className = `option-result-tag ${correct ? "ok" : "bad"}`;
+        resultTag.textContent = correct ? "✅ Correct" : "❌ Incorrect";
+        btn.appendChild(resultTag);
+      }
+    });
+
+    feedbackText.textContent = "";
+    feedbackText.className = "feedback";
+    return;
+  }
+
   if (correct) {
-    feedbackText.textContent = "✅ Correct!";
+    feedbackText.textContent = "Correct!";
     feedbackText.className = "feedback ok";
   } else {
     const expected = Array.isArray(q.answer) ? q.answer[0] : q.answer;
-    feedbackText.textContent = `❌ Not quite. Expected: ${expected}`;
+    feedbackText.textContent = `Not quite. Expected: ${expected}`;
     feedbackText.className = "feedback bad";
   }
 }
-
 function checkAnswer() {
   if (isAnswered) return;
   const q = currentQuestion();
@@ -263,6 +311,11 @@ function checkAnswer() {
 
   streakLabel.textContent = streak;
   nextBtn.disabled = false;
+
+  if (q.type === "blank") {
+    checkBtn.style.display = "none";
+    nextBtn.style.display = "inline-block";
+  }
 }
 
 function advance() {
@@ -301,3 +354,4 @@ restartBtn.addEventListener("click", () => {
 });
 checkBtn.addEventListener("click", checkAnswer);
 nextBtn.addEventListener("click", advance);
+
