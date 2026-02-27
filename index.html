@@ -9,8 +9,8 @@
 <body>
   <main class="app">
     <header class="top-bar card">
-      <h1>AGN-Lingo</h1>
-      <p class="subtitle">A Duolingo-style app about the basics of Active Galactic Nuclei (AGN).</p>
+      <h1><button id="homeBtn" class="home-btn" type="button">AGN-Lingo</button></h1>
+      <p class="subtitle">Instead of learning a language, you can learn about Active Galactic Nuclei!</p>
       <div class="stats-row">
         <div class="stat"><span>Lesson</span><strong id="lessonLabel">1 / 2</strong></div>
         <div class="stat"><span>Question</span><strong id="questionLabel">1 / 8</strong></div>
@@ -22,20 +22,41 @@
     </header>
 
     <section id="introScreen" class="card screen active">
-      <h2>Welcome, explorer 👋</h2>
+      <h2>Welcome!</h2>
       <p>
         You will complete <strong>2 short AGN lessons</strong> through fill-in-the-blank prompts, quick concept checks,
         and sentence completions.
       </p>
       <ul>
-        <li>Goal: learn the core AGN lingo and ideas</li>
+        <li>Goal: learn the core AGN vocabulary and ideas</li>
         <li>Estimated time: <strong>5–10 minutes</strong></li>
         <li>No prior astronomy required!</li>
       </ul>
       <button id="startBtn" class="btn btn-primary">Start</button>
     </section>
 
+    <section id="homeModelCard" class="card home-model-card">
+      <h2>AGN diagram (not to scale!)</h2>
+      <img
+        class="home-model-image"
+        src="agn model drawing - annotated - white text.png"
+        alt="Annotated AGN model diagram" />
+    </section>
+
+    <section id="lessonTransitionScreen" class="card screen">
+      <h2 id="lessonTransitionTitle"></h2>
+      <p id="lessonTransitionText"></p>
+      <button id="lessonContinueBtn" class="btn btn-primary">Begin Lesson</button>
+    </section>
+
+    <section id="reviewScreen" class="card screen">
+      <h2 id="reviewTitle"></h2>
+      <p id="reviewText"></p>
+      <button id="reviewContinueBtn" class="btn btn-primary">Start Review</button>
+    </section>
+
     <section id="quizScreen" class="card screen" aria-live="polite">
+      <p id="lessonName" class="lesson-name"></p>
       <div class="pill" id="typeBadge">Fill in the blank</div>
       <h2 id="promptText"></h2>
       <p id="hintText" class="hint"></p>
@@ -68,6 +89,11 @@
       <button id="restartBtn" class="btn btn-primary">Play Again</button>
     </section>
   </main>
+
+  <div id="agnFlashOverlay" class="agn-flash-overlay" aria-hidden="true">
+    <object id="agnFlashObject" class="agn-flash-object" type="image/svg+xml" data="agn model drawing.svg" aria-label="AGN celebration animation"></object>
+    <p id="agnStreakText" class="agn-streak-text"></p>
+  </div>
 
   <script src="script.js"></script>
 </body>

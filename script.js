@@ -3,11 +3,20 @@ const lessons = [
     name: "AGN Core Parts",
     questions: [
       {
-        type: "blank",
-        badge: "Fill in the blank",
+        type: "multiple",
+        badge: "Pick one",
         prompt: "An AGN is powered by matter falling onto a supermassive ______ hole.",
         hint: "Think of the central engine.",
-        answer: ["black"]
+        answer: "black",
+        options: ["black", "white", "worm"]
+      },
+      {
+        type: "multiple",
+        badge: "Pick one",
+        prompt: "Which structure surrounds the immediate vicinity of the central supermassive black hole (SMBH)?",
+        hint: "It fuels the growth of the black hole",
+        answer: "Accretion disk",
+        options: ["Dusty torus", "Accretion disk", "Dark matter halo"]
       },
       {
         type: "multiple",
@@ -132,14 +141,25 @@ const lessons = [
 ];
 
 const introScreen = document.getElementById("introScreen");
+const homeModelCard = document.getElementById("homeModelCard");
+const lessonTransitionScreen = document.getElementById("lessonTransitionScreen");
+const reviewScreen = document.getElementById("reviewScreen");
 const quizScreen = document.getElementById("quizScreen");
 const summaryScreen = document.getElementById("summaryScreen");
+const lessonTransitionTitle = document.getElementById("lessonTransitionTitle");
+const lessonTransitionText = document.getElementById("lessonTransitionText");
+const lessonContinueBtn = document.getElementById("lessonContinueBtn");
+const reviewTitle = document.getElementById("reviewTitle");
+const reviewText = document.getElementById("reviewText");
+const reviewContinueBtn = document.getElementById("reviewContinueBtn");
+const lessonName = document.getElementById("lessonName");
 const promptText = document.getElementById("promptText");
 const hintText = document.getElementById("hintText");
 const inputArea = document.getElementById("inputArea");
 const feedbackText = document.getElementById("feedbackText");
 const lessonLabel = document.getElementById("lessonLabel");
 const questionLabel = document.getElementById("questionLabel");
+const questionStat = questionLabel.closest(".stat");
 const streakLabel = document.getElementById("streakLabel");
 const typeBadge = document.getElementById("typeBadge");
 const progressBar = document.getElementById("progressBar");
@@ -147,38 +167,132 @@ const summaryText = document.getElementById("summaryText");
 const checkBtn = document.getElementById("checkBtn");
 const nextBtn = document.getElementById("nextBtn");
 const actions = document.querySelector(".actions");
+const agnFlashOverlay = document.getElementById("agnFlashOverlay");
+const agnFlashObject = document.getElementById("agnFlashObject");
+const agnStreakText = document.getElementById("agnStreakText");
 
 const startBtn = document.getElementById("startBtn");
 const restartBtn = document.getElementById("restartBtn");
+const homeBtn = document.getElementById("homeBtn");
 
 let lessonIndex = 0;
-let questionIndex = 0;
+let lessonQueue = [];
+let queuePosition = 0;
+let retryQueue = [];
+let lessonRound = 1;
+let lessonQuestionCount = 0;
 let streak = 0;
 let score = 0;
+let mistakes = 0;
 let isAnswered = false;
 let selectedOption = null;
+const completedQuestionKeys = new Set();
+const lessonCompletedKeys = new Set();
+let agnFlashTimeoutId = null;
+let agnJetAnimationFrame = null;
+let agnAnimationStart = null;
+let agnPatternsReady = false;
+let agnUpperPattern = null;
+let agnLowerPattern = null;
+const AGN_FLASH_MS = 5000;
+const AGN_PATTERN_BASE_X = 200;
+const AGN_PATTERN_BASE_Y = 604.5;
 
 const totalQuestions = lessons.reduce((sum, lesson) => sum + lesson.questions.length, 0);
 
 function showScreen(screen) {
-  [introScreen, quizScreen, summaryScreen].forEach((s) => s.classList.remove("active"));
+  [introScreen, lessonTransitionScreen, reviewScreen, quizScreen, summaryScreen].forEach((s) => s.classList.remove("active"));
   screen.classList.add("active");
+  if (homeModelCard) {
+    homeModelCard.style.display = screen === introScreen ? "block" : "none";
+  }
+}
+
+function currentQuestionIndex() {
+  return lessonQueue[queuePosition];
 }
 
 function currentQuestion() {
-  return lessons[lessonIndex].questions[questionIndex];
-}
-
-function globalQuestionNumber() {
-  let number = questionIndex + 1;
-  for (let i = 0; i < lessonIndex; i += 1) {
-    number += lessons[i].questions.length;
-  }
-  return number;
+  return lessons[lessonIndex].questions[currentQuestionIndex()];
 }
 
 function normalize(text) {
   return text.toLowerCase().trim().replace(/\s+/g, " ");
+}
+
+function setJetPatternTransform(upperYOffset, lowerYOffset) {
+  if (!agnUpperPattern || !agnLowerPattern) return;
+  agnUpperPattern.setAttribute("patternTransform", `matrix(2,0,0,2,${AGN_PATTERN_BASE_X},${AGN_PATTERN_BASE_Y + upperYOffset})`);
+  agnLowerPattern.setAttribute("patternTransform", `matrix(2,0,0,2,${AGN_PATTERN_BASE_X},${AGN_PATTERN_BASE_Y + lowerYOffset})`);
+}
+
+function stopAgnJetAnimation() {
+  if (agnJetAnimationFrame !== null) {
+    cancelAnimationFrame(agnJetAnimationFrame);
+    agnJetAnimationFrame = null;
+  }
+  agnAnimationStart = null;
+  if (agnPatternsReady) {
+    setJetPatternTransform(0, 0);
+  }
+}
+
+function animateAgnJetsFrame(timestamp) {
+  if (agnAnimationStart === null) {
+    agnAnimationStart = timestamp;
+  }
+  const elapsed = timestamp - agnAnimationStart;
+  const t = Math.min(elapsed / AGN_FLASH_MS, 1);
+  const offset = (elapsed * 0.08) % 48;
+  setJetPatternTransform(-offset, offset);
+
+  if (t < 1) {
+    agnJetAnimationFrame = requestAnimationFrame(animateAgnJetsFrame);
+    return;
+  }
+  stopAgnJetAnimation();
+}
+
+function initializeAgnPatterns() {
+  const svgDoc = agnFlashObject.contentDocument;
+  if (!svgDoc) {
+    agnPatternsReady = false;
+    return;
+  }
+  const upperJet = svgDoc.getElementById("path290");
+  const lowerJet = svgDoc.getElementById("path291");
+  agnUpperPattern = svgDoc.getElementById("pattern299");
+  agnLowerPattern = svgDoc.getElementById("pattern300");
+  agnPatternsReady = Boolean(upperJet && lowerJet && agnUpperPattern && agnLowerPattern);
+  if (agnPatternsReady) {
+    setJetPatternTransform(0, 0);
+  }
+}
+
+function flashAgnCelebration(currentStreak) {
+  if (!agnFlashOverlay || !agnFlashObject) return;
+  if (agnStreakText) {
+    agnStreakText.textContent = `${currentStreak} in a row!`;
+  }
+  if (agnFlashTimeoutId !== null) {
+    clearTimeout(agnFlashTimeoutId);
+    agnFlashTimeoutId = null;
+  }
+  stopAgnJetAnimation();
+  if (!agnPatternsReady) {
+    initializeAgnPatterns();
+  }
+  agnFlashOverlay.classList.remove("active");
+  void agnFlashOverlay.offsetWidth;
+  agnFlashOverlay.classList.add("active");
+  if (agnPatternsReady) {
+    agnJetAnimationFrame = requestAnimationFrame(animateAgnJetsFrame);
+  }
+  agnFlashTimeoutId = setTimeout(() => {
+    agnFlashOverlay.classList.remove("active");
+    stopAgnJetAnimation();
+    agnFlashTimeoutId = null;
+  }, AGN_FLASH_MS);
 }
 
 function renderQuestion() {
@@ -208,12 +322,20 @@ function renderQuestion() {
   typeBadge.textContent = q.badge;
   promptText.textContent = q.prompt;
   hintText.textContent = `Hint: ${q.hint}`;
+  lessonName.textContent = lessonRound > 1
+    ? `Lesson ${lessonIndex + 1}: ${lessons[lessonIndex].name} (Review round ${lessonRound - 1})`
+    : `Lesson ${lessonIndex + 1}: ${lessons[lessonIndex].name}`;
 
   lessonLabel.textContent = `${lessonIndex + 1} / ${lessons.length}`;
-  questionLabel.textContent = `${questionIndex + 1} / ${lessons[lessonIndex].questions.length}`;
+  if (lessonRound === 1) {
+    questionStat.style.display = "";
+    questionLabel.textContent = `${queuePosition + 1} / ${lessonQuestionCount}`;
+  } else {
+    questionStat.style.display = "none";
+  }
   streakLabel.textContent = streak;
 
-  const progress = (globalQuestionNumber() - 1) / totalQuestions;
+  const progress = lessonCompletedKeys.size / lessonQuestionCount;
   progressBar.style.width = `${Math.max(3, progress * 100)}%`;
 
   if (q.type === "blank") {
@@ -279,6 +401,8 @@ function markFeedback(correct, q) {
 function checkAnswer() {
   if (isAnswered) return;
   const q = currentQuestion();
+  const questionIdx = currentQuestionIndex();
+  const questionKey = `${lessonIndex}:${questionIdx}`;
   let correct = false;
 
   if (q.type === "blank") {
@@ -304,9 +428,20 @@ function checkAnswer() {
 
   if (correct) {
     streak += 1;
-    score += 1;
+    lessonCompletedKeys.add(questionIdx);
+    if (!completedQuestionKeys.has(questionKey)) {
+      completedQuestionKeys.add(questionKey);
+      score += 1;
+    }
+    if (streak > 0 && streak % 3 === 0) {
+      flashAgnCelebration(streak);
+    }
   } else {
     streak = 0;
+    mistakes += 1;
+    if (!retryQueue.includes(questionIdx)) {
+      retryQueue.push(questionIdx);
+    }
   }
 
   streakLabel.textContent = streak;
@@ -319,39 +454,124 @@ function checkAnswer() {
 }
 
 function advance() {
-  const lesson = lessons[lessonIndex];
-  if (questionIndex < lesson.questions.length - 1) {
-    questionIndex += 1;
+  if (queuePosition < lessonQueue.length - 1) {
+    queuePosition += 1;
     renderQuestion();
+    return;
+  }
+
+  if (retryQueue.length > 0) {
+    showReviewTransition();
     return;
   }
 
   if (lessonIndex < lessons.length - 1) {
     lessonIndex += 1;
-    questionIndex = 0;
-    renderQuestion();
+    showLessonTransition();
     return;
   }
 
   progressBar.style.width = "100%";
-  summaryText.textContent = `You answered ${score} out of ${totalQuestions} correctly. Keep reviewing these terms and you'll read AGN papers with much more confidence.`;
+  summaryText.textContent = `You mastered all ${totalQuestions} questions with ${mistakes} total mistake${mistakes === 1 ? "" : "s"} along the way.`;
   showScreen(summaryScreen);
 }
 
-function resetSession() {
-  lessonIndex = 0;
-  questionIndex = 0;
-  streak = 0;
-  score = 0;
+function startLesson() {
+  lessonQuestionCount = lessons[lessonIndex].questions.length;
+  lessonQueue = Array.from({ length: lessonQuestionCount }, (_, i) => i);
+  queuePosition = 0;
+  retryQueue = [];
+  lessonRound = 1;
+  lessonCompletedKeys.clear();
+  questionStat.style.display = "";
   showScreen(quizScreen);
   renderQuestion();
 }
 
-startBtn.addEventListener("click", resetSession);
-restartBtn.addEventListener("click", () => {
-  showScreen(introScreen);
+function startReviewRound() {
+  lessonQueue = [...retryQueue];
+  retryQueue = [];
+  queuePosition = 0;
+  lessonRound += 1;
+  questionStat.style.display = "none";
+  showScreen(quizScreen);
+  renderQuestion();
+}
+
+function showLessonTransition() {
+  lessonTransitionTitle.textContent = `Lesson ${lessonIndex + 1}: ${lessons[lessonIndex].name}`;
+  lessonTransitionText.textContent = lessonIndex === 0
+    ? "New lesson unlocked. Press begin when you're ready."
+    : "Nice work. You've completed the previous lesson and unlocked the next one.";
+  lessonContinueBtn.textContent = `Begin Lesson ${lessonIndex + 1}`;
+  showScreen(lessonTransitionScreen);
+}
+
+function showReviewTransition() {
+  reviewTitle.textContent = `Lesson ${lessonIndex + 1} Review`;
+  reviewText.textContent = `You have ${retryQueue.length} question${retryQueue.length === 1 ? "" : "s"} to fix. Review continues until all are correct.`;
+  reviewContinueBtn.textContent = lessonRound === 1 ? "Start Review" : `Start Review Round ${lessonRound}`;
+  showScreen(reviewScreen);
+}
+
+function resetAppState() {
+  lessonIndex = 0;
+  lessonQueue = [];
+  queuePosition = 0;
+  retryQueue = [];
+  lessonRound = 1;
+  lessonQuestionCount = 0;
+  streak = 0;
+  score = 0;
+  mistakes = 0;
+  completedQuestionKeys.clear();
+  lessonCompletedKeys.clear();
+  agnFlashOverlay.classList.remove("active");
+  if (agnFlashTimeoutId !== null) {
+    clearTimeout(agnFlashTimeoutId);
+    agnFlashTimeoutId = null;
+  }
+  stopAgnJetAnimation();
+  questionStat.style.display = "";
   progressBar.style.width = "0%";
-});
+  lessonLabel.textContent = `1 / ${lessons.length}`;
+  questionLabel.textContent = `1 / ${lessons[0].questions.length}`;
+  streakLabel.textContent = "0";
+}
+
+function resetSession() {
+  resetAppState();
+  showLessonTransition();
+}
+
+function resetToIntro() {
+  resetAppState();
+  showScreen(introScreen);
+}
+
+startBtn.addEventListener("click", resetSession);
+lessonContinueBtn.addEventListener("click", startLesson);
+reviewContinueBtn.addEventListener("click", startReviewRound);
+restartBtn.addEventListener("click", resetToIntro);
+homeBtn.addEventListener("click", resetToIntro);
 checkBtn.addEventListener("click", checkAnswer);
 nextBtn.addEventListener("click", advance);
+agnFlashObject.addEventListener("load", initializeAgnPatterns);
+initializeAgnPatterns();
+
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Enter") return;
+  if (!quizScreen.classList.contains("active")) return;
+
+  if (nextBtn.style.display !== "none" && !nextBtn.disabled) {
+    event.preventDefault();
+    advance();
+    return;
+  }
+
+  if (checkBtn.style.display !== "none" && !checkBtn.disabled) {
+    event.preventDefault();
+    checkAnswer();
+  }
+});
 
