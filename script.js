@@ -1,14 +1,13 @@
 const lessons = [
   {
-    name: "AGN Core Parts",
+    name: "AGN Basics",
     questions: [
       {
         type: "multiple",
         badge: "Pick one",
         prompt: "What does AGN stand for?",
-        hint: "This may or may not be a trick question.",
         answer: "Active Galactic Nucleus",
-        options: ["Active Galactic Nucleus", "Aberdeen's Greatest Neurologist", "Absolutely Gigantic Neptune"]
+        options: ["Active Galactic Nucleus", "Atomic Gyrating Nebula", "Absolutely Gigantic Neptune"]
       },
       {
         type: "multiple",
@@ -23,7 +22,7 @@ const lessons = [
         badge: "Diagram label",
         prompt: "In this AGN diagram, what term is hidden by the question marks?",
         hint: "These can be some of the most massive objects in the Universe.",
-        answer: ["supermassive black hole", "black hole", "SMBH"],
+        answer: ["Supermassive black hole", "Black hole", "SMBH"],
         diagramTargetId: "text10"
       },
       {
@@ -31,6 +30,7 @@ const lessons = [
         badge: "True or False",
         prompt: "An AGN can be bright enough to outshine its host galaxy",
         answer: "True",
+        hint: "Some AGN appear as bright as nearby stars, despite being thousands of times farther away!",
         options: ["True", "False"]
       },
       {
@@ -50,50 +50,50 @@ const lessons = [
         diagramTargetId: "text13"
       },
       {
-        type: "blank",
-        badge: "Complete the sentence",
-        prompt: "The BLR (Broad-Line Region) is called 'broad' because gas there moves at very high ______.",
-        hint: "Plural noun.",
-        answer: ["velocities", "speeds"]
+        type: "multiple",
+        badge: "Pick one",
+        prompt: "Not all AGN have the same luminosity. What are the brightest AGN called?",
+        hint: "Initially mistaken as stars, these objects were dubbed \"Quasi-Stellar Objects\".",
+        answer: "Quasars",
+        options: ["Quasars", "Supernovae", "Red Giants"]
       },
       {
         type: "multiple",
         badge: "Pick one",
-        prompt: "The dusty torus mostly helps explain differences in AGN ______.",
-        hint: "Orientation-based unified model.",
-        answer: "types",
-        options: ["sizes", "types", "ages"]
+        prompt: "What kind of light does an AGN emit?",
+        answer: "All of the above",
+        options: ["Ultraviolet", "Visible", "X-Ray", "All of the above"]
       },
       {
-        type: "blank",
-        badge: "Fill in the blank",
-        prompt: "The narrow-line region is located ______ from the black hole than the BLR.",
-        hint: "Comparative word.",
-        answer: ["farther", "further"]
+        type: "diagram",
+        badge: "Diagram label",
+        prompt: "In this AGN diagram, what term is hidden by the question marks?",
+        hint: "Depending on our viewing angle, this donut-shaped structure can hide the centre of the AGN, drastically changing what we are able to see.",
+        answer: ["Dusty Torus", "Dust Torus", "Obscuring Torus", "Torus"],
+        diagramTargetId: "text13"
       },
-      {
-        type: "multiple",
-        badge: "Pick one",
-        prompt: "If a jet is pointed nearly at us, the AGN is often classified as a:",
-        hint: "A jet-dominated class.",
-        answer: "Blazar",
-        options: ["Seyfert 2", "LINER", "Blazar"]
-      },
-      {
-        type: "blank",
-        badge: "Complete the sentence",
-        prompt: "AGN jets are often called ______ because particles move close to light speed.",
-        hint: "Starts with r.",
-        answer: ["relativistic"]
-      },
-      {
-        type: "multiple",
-        badge: "Quick check",
-        prompt: "Which is generally the most luminous AGN class?",
-        hint: "Bright enough to outshine host galaxies.",
-        answer: "Quasar",
-        options: ["Quasar", "Seyfert", "Normal spiral nucleus"]
-      }
+      // {
+      //   type: "blank",
+      //   badge: "Fill in the blank",
+      //   prompt: "The narrow-line region is located ______ from the black hole than the BLR.",
+      //   hint: "Comparative word.",
+      //   answer: ["farther", "further"]
+      // },
+      // {
+      //   type: "multiple",
+      //   badge: "Pick one",
+      //   prompt: "If a jet is pointed nearly at us, the AGN is often classified as a:",
+      //   hint: "A jet-dominated class.",
+      //   answer: "Blazar",
+      //   options: ["Seyfert 2", "LINER", "Blazar"]
+      // },
+      // {
+      //   type: "blank",
+      //   badge: "Complete the sentence",
+      //   prompt: "AGN jets are often called ______ because particles move close to light speed.",
+      //   hint: "Starts with r.",
+      //   answer: ["relativistic"]
+      // }
     ]
   },
   {
@@ -150,30 +150,26 @@ const lessons = [
         prompt: "Quasars are AGN with extremely high intrinsic ______.",
         hint: "How bright they are physically.",
         answer: ["luminosity", "brightness"]
+      }
+    ]
+  },
+  {
+    name: "Quasar variability",
+    questions: [
+      {
+        type: "multiple",
+        badge: "Pick one",
+        prompt: "Quasars (very bright AGN) are known to change in luminosity over time. What's the shortest timescale over which we can observe these changes?",
+        hint: "How often can we measure a quasar's brightness and see a measurable change?",
+        answer: "Days",
+        options: ["Days", "Months", "Years"]
       },
       {
         type: "multiple",
-        badge: "Final concept",
-        prompt: "Main energy source of AGN activity is:",
-        hint: "Not nuclear fusion in stars.",
-        answer: "Gravitational energy from accretion",
-        options: ["Supernova explosions", "Gravitational energy from accretion", "Dark matter annihilation"]
-      },
-      {
-        type: "diagram",
-        badge: "Diagram label",
-        prompt: "In the AGN diagram, which region is hidden by the question marks?",
-        hint: "This is the more compact line-emitting region.",
-        answer: ["broad line region", "blr", "broad-line region"],
-        diagramTargetId: "text16"
-      },
-      {
-        type: "diagram",
-        badge: "Diagram label",
-        prompt: "In the AGN diagram, which other line-emitting region is hidden by the question marks?",
-        hint: "This one is farther out from the SMBH.",
-        answer: ["narrow line region", "nlr", "narrow-line region"],
-        diagramTargetId: "text14"
+        badge: "True or False",
+        prompt: "Changes in quasar luminosity are usually only observed for a small portion of the spectrum, while other parts remain constant over time.",
+        answer: "False, we observe variability across all wavelengths.",
+        options: ["True, we only observe variability in the UV part of the spectrum.", "False, we observe variability across all wavelengths."]
       }
     ]
   }
@@ -317,7 +313,13 @@ function renderQuestion() {
 
   typeBadge.textContent = q.badge;
   promptText.textContent = q.prompt;
-  hintText.textContent = `Hint: ${q.hint}`;
+  if (q.hint && q.hint.trim() !== "") {
+    hintText.textContent = `Hint: ${q.hint}`;
+    hintText.style.display = "block";
+  } else {
+    hintText.textContent = "";
+    hintText.style.display = "none";
+  }
   lessonName.textContent = lessonRound > 1
     ? `Lesson ${lessonIndex + 1}: ${lessons[lessonIndex].name} (Review round ${lessonRound - 1})`
     : `Lesson ${lessonIndex + 1}: ${lessons[lessonIndex].name}`;
@@ -574,4 +576,3 @@ document.addEventListener("keydown", (event) => {
     checkAnswer();
   }
 });
-
