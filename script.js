@@ -13,26 +13,41 @@ const lessons = [
       {
         type: "multiple",
         badge: "Pick one",
-        prompt: "An AGN is powered by matter falling onto a supermassive ______ hole.",
-        hint: "Think of the central engine.",
-        answer: "black",
-        options: ["black", "white", "worm"]
+        prompt: "AGN are found in the centre of certain ______",
+        hint: "It's in the name!",
+        answer: "Galaxies",
+        options: ["Stars", "Galaxies", "Planets"]
+      },
+      {
+        type: "diagram",
+        badge: "Diagram label",
+        prompt: "In this AGN diagram, what term is hidden by the question marks?",
+        hint: "These can be some of the most massive objects in the Universe.",
+        answer: ["supermassive black hole", "black hole", "SMBH"],
+        diagramTargetId: "text10"
+      },
+      {
+        type: "multiple",
+        badge: "True or False",
+        prompt: "An AGN can be bright enough to outshine its host galaxy",
+        answer: "True",
+        options: ["True", "False"]
       },
       {
         type: "multiple",
         badge: "Pick one",
-        prompt: "Which structure surrounds the immediate vicinity of the central supermassive black hole (SMBH)?",
-        hint: "It fuels the growth of the black hole",
-        answer: "Accretion disk",
-        options: ["Dusty torus", "Accretion disk", "Dark matter halo"]
+        prompt: "What is the main source of energy for an AGN",
+        hint: "Think of which force a supermassive black hole creates.",
+        answer: "Gravitational energy",
+        options: ["Nuclear fusion reactions", "Dark matter annihilation", "Gravitational energy of surrounding gas"]
       },
       {
-        type: "multiple",
-        badge: "Pick one",
-        prompt: "Which structure in AGN emits strong thermal UV/optical light?",
-        hint: "It's a rotating disk of hot gas.",
-        answer: "Accretion disk",
-        options: ["Dusty torus", "Accretion disk", "Narrow-line region"]
+        type: "diagram",
+        badge: "Diagram label",
+        prompt: "In this AGN diagram, what term is hidden by the question marks?",
+        hint: "The matter in this disk accretes (falls) onto the black hole, releasing gravitational potential energy as light.",
+        answer: ["Accretion Disk"],
+        diagramTargetId: "text13"
       },
       {
         type: "blank",
@@ -78,14 +93,6 @@ const lessons = [
         hint: "Bright enough to outshine host galaxies.",
         answer: "Quasar",
         options: ["Quasar", "Seyfert", "Normal spiral nucleus"]
-      },
-      {
-        type: "diagram",
-        badge: "Diagram label",
-        prompt: "In the AGN diagram, what term is hidden by the question marks?",
-        hint: "This structure is doughnut-shaped and obscures the center at some angles.",
-        answer: ["dusty torus", "torus"],
-        diagramTargetId: "text12"
       }
     ]
   },
