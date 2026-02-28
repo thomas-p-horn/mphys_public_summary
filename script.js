@@ -50,6 +50,22 @@
         note: "Initially mistaken as stars, these objects were dubbed \"Quasi-Stellar Objects\", later shortened to \"Quasars\"."
       },
       {
+        type: "diagram",
+        badge: "Diagram label",
+        prompt: "In this AGN diagram, what term is hidden by the question marks?",
+        hint: "This part ejects matter with such speeds, we have to take relativistic effects into account.",
+        answer: ["Accretion Disk", "Accretion Disc"],
+        diagramTargetId: "text8"
+      },
+      {
+        type: "multiple",
+        badge: "Pick one",
+        prompt: "What do we call AGN whose jets are pointed almost directly toward Earth?",
+        answer: "Blazars",
+        options: ["Seyfert galaxies", "Radio-quiet quasars", "Blazars"],
+        note: "When a relativistic jet is aligned close to our line of sight, relativistic beaming makes the AGN appear extremely bright and variable."
+      },
+      {
         type: "multiple",
         badge: "Pick one",
         prompt: "What kind of light does an AGN emit?",
@@ -101,7 +117,7 @@
       {
         type: "multiple",
         badge: "True or False",
-        prompt: "True or False?\nChanges in quasar luminosity are usually only observed for a small portion of the spectrum, while other parts remain constant over time.",
+        prompt: "True or False? Changes in quasar luminosity are usually only observed for a small portion of the spectrum, while other parts remain constant over time.",
         answer: "False, we observe variability across all wavelengths.",
         options: ["True, we only observe variability in the UV part of the spectrum.", "False, we observe variability across all wavelengths."]
       },
