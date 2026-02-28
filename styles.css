@@ -137,6 +137,19 @@ body {
   letter-spacing: 0.01em;
 }
 
+.diagram-area {
+  display: none;
+  margin: 0.75rem 0;
+}
+
+.diagram-object {
+  width: 100%;
+  height: min(52vh, 460px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #0f172a;
+}
+
 .input-grid {
   display: grid;
   gap: 0.65rem;

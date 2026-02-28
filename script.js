@@ -70,6 +70,14 @@ const lessons = [
         hint: "Bright enough to outshine host galaxies.",
         answer: "Quasar",
         options: ["Quasar", "Seyfert", "Normal spiral nucleus"]
+      },
+      {
+        type: "diagram",
+        badge: "Diagram label",
+        prompt: "In the AGN diagram, what term is hidden by the question marks?",
+        hint: "This structure is doughnut-shaped and obscures the center at some angles.",
+        answer: ["dusty torus", "torus"],
+        diagramTargetId: "text12"
       }
     ]
   },
@@ -135,6 +143,22 @@ const lessons = [
         hint: "Not nuclear fusion in stars.",
         answer: "Gravitational energy from accretion",
         options: ["Supernova explosions", "Gravitational energy from accretion", "Dark matter annihilation"]
+      },
+      {
+        type: "diagram",
+        badge: "Diagram label",
+        prompt: "In the AGN diagram, which region is hidden by the question marks?",
+        hint: "This is the more compact line-emitting region.",
+        answer: ["broad line region", "blr", "broad-line region"],
+        diagramTargetId: "text16"
+      },
+      {
+        type: "diagram",
+        badge: "Diagram label",
+        prompt: "In the AGN diagram, which other line-emitting region is hidden by the question marks?",
+        hint: "This one is farther out from the SMBH.",
+        answer: ["narrow line region", "nlr", "narrow-line region"],
+        diagramTargetId: "text14"
       }
     ]
   }
@@ -155,6 +179,7 @@ const reviewContinueBtn = document.getElementById("reviewContinueBtn");
 const lessonName = document.getElementById("lessonName");
 const promptText = document.getElementById("promptText");
 const hintText = document.getElementById("hintText");
+const diagramArea = document.getElementById("diagramArea");
 const inputArea = document.getElementById("inputArea");
 const feedbackText = document.getElementById("feedbackText");
 const lessonLabel = document.getElementById("lessonLabel");
@@ -189,14 +214,7 @@ let selectedOption = null;
 const completedQuestionKeys = new Set();
 const lessonCompletedKeys = new Set();
 let agnFlashTimeoutId = null;
-let agnJetAnimationFrame = null;
-let agnAnimationStart = null;
-let agnPatternsReady = false;
-let agnUpperPattern = null;
-let agnLowerPattern = null;
 const AGN_FLASH_MS = 5000;
-const AGN_PATTERN_BASE_X = 200;
-const AGN_PATTERN_BASE_Y = 604.5;
 
 const totalQuestions = lessons.reduce((sum, lesson) => sum + lesson.questions.length, 0);
 
@@ -220,53 +238,22 @@ function normalize(text) {
   return text.toLowerCase().trim().replace(/\s+/g, " ");
 }
 
-function setJetPatternTransform(upperYOffset, lowerYOffset) {
-  if (!agnUpperPattern || !agnLowerPattern) return;
-  agnUpperPattern.setAttribute("patternTransform", `matrix(2,0,0,2,${AGN_PATTERN_BASE_X},${AGN_PATTERN_BASE_Y + upperYOffset})`);
-  agnLowerPattern.setAttribute("patternTransform", `matrix(2,0,0,2,${AGN_PATTERN_BASE_X},${AGN_PATTERN_BASE_Y + lowerYOffset})`);
-}
-
-function stopAgnJetAnimation() {
-  if (agnJetAnimationFrame !== null) {
-    cancelAnimationFrame(agnJetAnimationFrame);
-    agnJetAnimationFrame = null;
-  }
-  agnAnimationStart = null;
-  if (agnPatternsReady) {
-    setJetPatternTransform(0, 0);
-  }
-}
-
-function animateAgnJetsFrame(timestamp) {
-  if (agnAnimationStart === null) {
-    agnAnimationStart = timestamp;
-  }
-  const elapsed = timestamp - agnAnimationStart;
-  const t = Math.min(elapsed / AGN_FLASH_MS, 1);
-  const offset = (elapsed * 0.08) % 48;
-  setJetPatternTransform(-offset, offset);
-
-  if (t < 1) {
-    agnJetAnimationFrame = requestAnimationFrame(animateAgnJetsFrame);
-    return;
-  }
-  stopAgnJetAnimation();
-}
-
-function initializeAgnPatterns() {
-  const svgDoc = agnFlashObject.contentDocument;
-  if (!svgDoc) {
-    agnPatternsReady = false;
-    return;
-  }
-  const upperJet = svgDoc.getElementById("path290");
-  const lowerJet = svgDoc.getElementById("path291");
-  agnUpperPattern = svgDoc.getElementById("pattern299");
-  agnLowerPattern = svgDoc.getElementById("pattern300");
-  agnPatternsReady = Boolean(upperJet && lowerJet && agnUpperPattern && agnLowerPattern);
-  if (agnPatternsReady) {
-    setJetPatternTransform(0, 0);
-  }
+function renderDiagramQuestion(targetId) {
+  diagramArea.style.display = "block";
+  diagramArea.innerHTML = '<object id="diagramQuestionObject" class="diagram-object" type="image/svg+xml" data="agn model drawing - annotated - white text.svg" aria-label="Annotated AGN diagram for question"></object>';
+  const obj = document.getElementById("diagramQuestionObject");
+  obj.addEventListener("load", () => {
+    try {
+      const svgDoc = obj.contentDocument;
+      if (!svgDoc) return;
+      const textEl = svgDoc.getElementById(targetId);
+      if (textEl) {
+        textEl.textContent = "???";
+      }
+    } catch (_error) {
+      // If browser blocks object document access, diagram still renders without masking.
+    }
+  });
 }
 
 function flashAgnCelebration(currentStreak) {
@@ -278,19 +265,11 @@ function flashAgnCelebration(currentStreak) {
     clearTimeout(agnFlashTimeoutId);
     agnFlashTimeoutId = null;
   }
-  stopAgnJetAnimation();
-  if (!agnPatternsReady) {
-    initializeAgnPatterns();
-  }
   agnFlashOverlay.classList.remove("active");
   void agnFlashOverlay.offsetWidth;
   agnFlashOverlay.classList.add("active");
-  if (agnPatternsReady) {
-    agnJetAnimationFrame = requestAnimationFrame(animateAgnJetsFrame);
-  }
   agnFlashTimeoutId = setTimeout(() => {
     agnFlashOverlay.classList.remove("active");
-    stopAgnJetAnimation();
     agnFlashTimeoutId = null;
   }, AGN_FLASH_MS);
 }
@@ -301,15 +280,17 @@ function renderQuestion() {
   feedbackText.textContent = "";
   feedbackText.className = "feedback";
   nextBtn.disabled = true;
+  diagramArea.style.display = "none";
+  diagramArea.innerHTML = "";
 
   const q = currentQuestion();
-  if (q.type === "blank") {
+  if (q.type === "blank" || q.type === "diagram") {
     quizScreen.insertBefore(feedbackText, actions);
   } else {
     quizScreen.appendChild(feedbackText);
   }
 
-  if (q.type === "blank") {
+  if (q.type === "blank" || q.type === "diagram") {
     checkBtn.style.display = "inline-block";
     checkBtn.disabled = true;
     nextBtn.style.display = "none";
@@ -338,7 +319,14 @@ function renderQuestion() {
   const progress = lessonCompletedKeys.size / lessonQuestionCount;
   progressBar.style.width = `${Math.max(3, progress * 100)}%`;
 
-  if (q.type === "blank") {
+  if (q.type === "diagram") {
+    renderDiagramQuestion(q.diagramTargetId);
+    inputArea.innerHTML = '<input class="text-input" id="answerInput" type="text" autocomplete="off" placeholder="Type the missing term..." />';
+    const answerInput = document.getElementById("answerInput");
+    answerInput.addEventListener("input", () => {
+      checkBtn.disabled = normalize(answerInput.value) === "";
+    });
+  } else if (q.type === "blank") {
     inputArea.innerHTML = '<input class="text-input" id="answerInput" type="text" autocomplete="off" placeholder="Type your answer..." />';
     const answerInput = document.getElementById("answerInput");
     answerInput.addEventListener("input", () => {
@@ -405,7 +393,7 @@ function checkAnswer() {
   const questionKey = `${lessonIndex}:${questionIdx}`;
   let correct = false;
 
-  if (q.type === "blank") {
+  if (q.type === "blank" || q.type === "diagram") {
     const input = document.getElementById("answerInput");
     const value = normalize(input.value);
     if (!value) {
@@ -447,7 +435,7 @@ function checkAnswer() {
   streakLabel.textContent = streak;
   nextBtn.disabled = false;
 
-  if (q.type === "blank") {
+  if (q.type === "blank" || q.type === "diagram") {
     checkBtn.style.display = "none";
     nextBtn.style.display = "inline-block";
   }
@@ -531,7 +519,6 @@ function resetAppState() {
     clearTimeout(agnFlashTimeoutId);
     agnFlashTimeoutId = null;
   }
-  stopAgnJetAnimation();
   questionStat.style.display = "";
   progressBar.style.width = "0%";
   lessonLabel.textContent = `1 / ${lessons.length}`;
@@ -556,8 +543,6 @@ restartBtn.addEventListener("click", resetToIntro);
 homeBtn.addEventListener("click", resetToIntro);
 checkBtn.addEventListener("click", checkAnswer);
 nextBtn.addEventListener("click", advance);
-agnFlashObject.addEventListener("load", initializeAgnPatterns);
-initializeAgnPatterns();
 
 document.addEventListener("keydown", (event) => {
   if (event.key !== "Enter") return;
