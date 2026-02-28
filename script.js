@@ -38,7 +38,7 @@
         badge: "Diagram label",
         prompt: "In this AGN diagram, what term is hidden by the question marks?",
         hint: "The matter in this disk accretes (falls) onto the black hole, releasing gravitational potential energy as light.",
-        answer: ["Accretion Disk"],
+        answer: ["Accretion Disk", "Accretion Disc"],
         diagramTargetId: "text13"
       },
       {
@@ -63,12 +63,7 @@
         hint: "Depending on our viewing angle, this donut-shaped structure can hide the centre of the AGN, drastically changing what we are able to see.",
         answer: ["Dusty Torus", "Dust Torus", "Obscuring Torus", "Torus"],
         diagramTargetId: "text13"
-      }
-    ]
-  },
-  {
-    name: "AGN Physics in Action",
-    questions: [
+      },
       {
         type: "multiple",
         badge: "Pick one",
@@ -82,7 +77,7 @@
         type: "multiple",
         badge: "Pick one",
         prompt: "The Eddington limit is the maximum rate at which a black hole can accrete matter. It is caused by an equilibrium between gravitational energy (pulling matter in) and ______ (pushing matter out).",
-        answer: ["Radiation pressure"],
+        answer: "Radiation pressure",
         options: ["The Lorentz force", "Electron degeneracy", "Radiation pressure"],
         note: "An AGN can emit so much energy through its radiation that the surrounding gas is pushed outwards."
       },
@@ -94,12 +89,7 @@
         answer: "Higher AGN luminosity",
         options: ["No emission lines", "Higher AGN luminosity", "No black hole growth"],
         note: "If more matter is falling in towards the black hole, more energy is released and more light is emitted."
-      }
-    ]
-  },
-  {
-    name: "Quasar variability",
-    questions: [
+      },
       {
         type: "multiple",
         badge: "Pick one",
@@ -114,6 +104,23 @@
         prompt: "Changes in quasar luminosity are usually only observed for a small portion of the spectrum, while other parts remain constant over time.",
         answer: "False, we observe variability across all wavelengths.",
         options: ["True, we only observe variability in the UV part of the spectrum.", "False, we observe variability across all wavelengths."]
+      },
+      {
+        type: "blank",
+        badge: "Complete the sentence",
+        prompt: "The quickest possible time for energy to move across some part of an AGN is called the \"______-crossing timescale\"",
+        hint: "What's the fastest thing that exists?",
+        answer: "Light",
+        note: "Nothing travels faster than light, so if the centre of the AGN suddenly gets brighter it will take a while for the light (and thus the energy) to reach the outer edges of the AGN. Therefore there is an upper limit on how fast the AGN as a whole can change its luminosity."
+      },
+      {
+        type: "multiple",
+        badge: "Pick one",
+        prompt: "From which element are we likely to observe variability on short timescales?",
+        hint: "Due to their size, it takes a long time for energy to move around in AGN. As a result, larger structures will take longer to change in luminosity.",
+        answer: "Accretion disk",
+        options: ["Accretion disk", "Dusty torus", "Narrow line region"]
+
       }
     ]
   }
@@ -299,14 +306,15 @@ function renderQuestion() {
 function markFeedback(correct, q) {
   if (q.type === "multiple") {
     const normalizedSelected = normalize(selectedOption || "");
-    const normalizedAnswer = normalize(q.answer);
+    const normalizedAnswers = (Array.isArray(q.answer) ? q.answer : [q.answer]).map((a) => normalize(a));
+    const normalizedAnswer = normalizedAnswers[0];
 
     inputArea.querySelectorAll(".option-btn").forEach((btn) => {
       const optionText = normalize(btn.textContent || "");
       btn.disabled = true;
       btn.classList.remove("selected");
 
-      if (optionText === normalizedAnswer) {
+      if (normalizedAnswers.includes(optionText)) {
         btn.classList.add("correct-outline");
       }
 
@@ -356,7 +364,8 @@ function checkAnswer() {
       feedbackText.className = "feedback bad";
       return;
     }
-    correct = normalize(selectedOption) === normalize(q.answer);
+    const acceptedAnswers = Array.isArray(q.answer) ? q.answer : [q.answer];
+    correct = acceptedAnswers.some((candidate) => normalize(selectedOption) === normalize(candidate));
   }
 
   isAnswered = true;
