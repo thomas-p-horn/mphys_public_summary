@@ -1,4 +1,4 @@
-const lessons = [
+﻿const questionGroups = [
   {
     name: "AGN Basics",
     questions: [
@@ -30,16 +30,8 @@ const lessons = [
         badge: "True or False",
         prompt: "An AGN can be bright enough to outshine its host galaxy",
         answer: "True",
-        hint: "Some AGN appear as bright as nearby stars, despite being thousands of times farther away!",
-        options: ["True", "False"]
-      },
-      {
-        type: "multiple",
-        badge: "Pick one",
-        prompt: "What is the main source of energy for an AGN",
-        hint: "Think of which force a supermassive black hole creates.",
-        answer: "Gravitational energy",
-        options: ["Nuclear fusion reactions", "Dark matter annihilation", "Gravitational energy of surrounding gas"]
+        options: ["True", "False"],
+        note: "Some AGN appear as bright as nearby stars, despite being thousands of times farther away!"
       },
       {
         type: "diagram",
@@ -53,9 +45,9 @@ const lessons = [
         type: "multiple",
         badge: "Pick one",
         prompt: "Not all AGN have the same luminosity. What are the brightest AGN called?",
-        hint: "Initially mistaken as stars, these objects were dubbed \"Quasi-Stellar Objects\".",
         answer: "Quasars",
-        options: ["Quasars", "Supernovae", "Red Giants"]
+        options: ["Quasars", "Supernovae", "Red Giants"],
+        note: "Initially mistaken as stars, these objects were dubbed \"Quasi-Stellar Objects\", later shortened to \"Quasars\"."
       },
       {
         type: "multiple",
@@ -71,40 +63,28 @@ const lessons = [
         hint: "Depending on our viewing angle, this donut-shaped structure can hide the centre of the AGN, drastically changing what we are able to see.",
         answer: ["Dusty Torus", "Dust Torus", "Obscuring Torus", "Torus"],
         diagramTargetId: "text13"
-      },
-      // {
-      //   type: "blank",
-      //   badge: "Fill in the blank",
-      //   prompt: "The narrow-line region is located ______ from the black hole than the BLR.",
-      //   hint: "Comparative word.",
-      //   answer: ["farther", "further"]
-      // },
-      // {
-      //   type: "multiple",
-      //   badge: "Pick one",
-      //   prompt: "If a jet is pointed nearly at us, the AGN is often classified as a:",
-      //   hint: "A jet-dominated class.",
-      //   answer: "Blazar",
-      //   options: ["Seyfert 2", "LINER", "Blazar"]
-      // },
-      // {
-      //   type: "blank",
-      //   badge: "Complete the sentence",
-      //   prompt: "AGN jets are often called ______ because particles move close to light speed.",
-      //   hint: "Starts with r.",
-      //   answer: ["relativistic"]
-      // }
+      }
     ]
   },
   {
     name: "AGN Physics in Action",
     questions: [
       {
-        type: "blank",
-        badge: "Fill in the blank",
-        prompt: "The Eddington limit compares outward radiation pressure against inward ______ pull.",
-        hint: "A force due to mass.",
-        answer: ["gravity", "gravitational"]
+        type: "multiple",
+        badge: "Pick one",
+        prompt: "What is the main source of energy for an AGN",
+        hint: "Which force does a supermassive black hole create?",
+        answer: "Gravitational potential energy",
+        options: ["Nuclear fusion reactions", "Dark matter annihilation", "Gravitational potential energy"],
+        note: "As gas and dust are gravitationally pulled towards the black hole, they lose their potential energy, which is converted into light."
+      },
+      {
+        type: "multiple",
+        badge: "Pick one",
+        prompt: "The Eddington limit is the maximum rate at which a black hole can accrete matter. It is caused by an equilibrium between gravitational energy (pulling matter in) and ______ (pushing matter out).",
+        answer: ["Radiation pressure"],
+        options: ["The Lorentz force", "Electron degeneracy", "Radiation pressure"],
+        note: "An AGN can emit so much energy through its radiation that the surrounding gas is pushed outwards."
       },
       {
         type: "multiple",
@@ -112,44 +92,8 @@ const lessons = [
         prompt: "A higher accretion rate usually means: ",
         hint: "Assume all else equal.",
         answer: "Higher AGN luminosity",
-        options: ["No emission lines", "Higher AGN luminosity", "No black hole growth"]
-      },
-      {
-        type: "blank",
-        badge: "Complete the sentence",
-        prompt: "In unified models, Type 1 vs Type 2 AGN can differ mainly by our viewing ______.",
-        hint: "Geometry word.",
-        answer: ["angle", "orientation"]
-      },
-      {
-        type: "multiple",
-        badge: "Pick one",
-        prompt: "Which region is typically more compact?",
-        hint: "Close to central SMBH.",
-        answer: "Broad-line region",
-        options: ["Narrow-line region", "Host galaxy disk", "Broad-line region"]
-      },
-      {
-        type: "blank",
-        badge: "Fill in the blank",
-        prompt: "A Seyfert galaxy is usually a bright AGN in a relatively nearby ______ galaxy.",
-        hint: "General term for galaxies with structure.",
-        answer: ["host", "spiral", "disk"]
-      },
-      {
-        type: "multiple",
-        badge: "Quick check",
-        prompt: "Broad emission lines mainly indicate:",
-        hint: "Think Doppler broadening.",
-        answer: "Rapid gas motion",
-        options: ["Cold gas", "Rapid gas motion", "No ionization"]
-      },
-      {
-        type: "blank",
-        badge: "Complete the sentence",
-        prompt: "Quasars are AGN with extremely high intrinsic ______.",
-        hint: "How bright they are physically.",
-        answer: ["luminosity", "brightness"]
+        options: ["No emission lines", "Higher AGN luminosity", "No black hole growth"],
+        note: "If more matter is falling in towards the black hole, more energy is released and more light is emitted."
       }
     ]
   },
@@ -177,25 +121,15 @@ const lessons = [
 
 const introScreen = document.getElementById("introScreen");
 const homeModelCard = document.getElementById("homeModelCard");
-const lessonTransitionScreen = document.getElementById("lessonTransitionScreen");
-const reviewScreen = document.getElementById("reviewScreen");
 const quizScreen = document.getElementById("quizScreen");
 const summaryScreen = document.getElementById("summaryScreen");
-const lessonTransitionTitle = document.getElementById("lessonTransitionTitle");
-const lessonTransitionText = document.getElementById("lessonTransitionText");
-const lessonContinueBtn = document.getElementById("lessonContinueBtn");
-const reviewTitle = document.getElementById("reviewTitle");
-const reviewText = document.getElementById("reviewText");
-const reviewContinueBtn = document.getElementById("reviewContinueBtn");
-const lessonName = document.getElementById("lessonName");
 const promptText = document.getElementById("promptText");
 const hintText = document.getElementById("hintText");
 const diagramArea = document.getElementById("diagramArea");
 const inputArea = document.getElementById("inputArea");
+const noteText = document.getElementById("noteText");
 const feedbackText = document.getElementById("feedbackText");
-const lessonLabel = document.getElementById("lessonLabel");
 const questionLabel = document.getElementById("questionLabel");
-const questionStat = questionLabel.closest(".stat");
 const streakLabel = document.getElementById("streakLabel");
 const typeBadge = document.getElementById("typeBadge");
 const progressBar = document.getElementById("progressBar");
@@ -211,42 +145,47 @@ const startBtn = document.getElementById("startBtn");
 const restartBtn = document.getElementById("restartBtn");
 const homeBtn = document.getElementById("homeBtn");
 
-let lessonIndex = 0;
-let lessonQueue = [];
-let queuePosition = 0;
-let retryQueue = [];
-let lessonRound = 1;
-let lessonQuestionCount = 0;
+const allQuestions = questionGroups.flatMap((group, groupIdx) =>
+  group.questions.map((question, questionIdx) => ({
+    ...question,
+    _qid: `${groupIdx}:${questionIdx}`
+  }))
+);
+
+let questionQueue = [];
+let currentIndex = 0;
 let streak = 0;
 let score = 0;
 let mistakes = 0;
 let isAnswered = false;
 let selectedOption = null;
-const completedQuestionKeys = new Set();
-const lessonCompletedKeys = new Set();
+const masteredQuestionKeys = new Set();
 let agnFlashTimeoutId = null;
-const AGN_FLASH_MS = 5000;
 
-const totalQuestions = lessons.reduce((sum, lesson) => sum + lesson.questions.length, 0);
+const AGN_FLASH_MS = 5000;
+const totalQuestions = allQuestions.length;
 
 function showScreen(screen) {
-  [introScreen, lessonTransitionScreen, reviewScreen, quizScreen, summaryScreen].forEach((s) => s.classList.remove("active"));
+  [introScreen, quizScreen, summaryScreen].forEach((s) => s.classList.remove("active"));
   screen.classList.add("active");
   if (homeModelCard) {
     homeModelCard.style.display = screen === introScreen ? "block" : "none";
   }
 }
 
-function currentQuestionIndex() {
-  return lessonQueue[queuePosition];
-}
-
 function currentQuestion() {
-  return lessons[lessonIndex].questions[currentQuestionIndex()];
+  return questionQueue[currentIndex];
 }
 
 function normalize(text) {
   return text.toLowerCase().trim().replace(/\s+/g, " ");
+}
+
+function updateProgressUI() {
+  questionLabel.textContent = `${score} / ${totalQuestions}`;
+  streakLabel.textContent = `${streak}`;
+  const progress = totalQuestions === 0 ? 0 : score / totalQuestions;
+  progressBar.style.width = `${Math.max(3, progress * 100)}%`;
 }
 
 function renderDiagramQuestion(targetId) {
@@ -286,15 +225,19 @@ function flashAgnCelebration(currentStreak) {
 }
 
 function renderQuestion() {
+  const q = currentQuestion();
+  if (!q) return;
+
   isAnswered = false;
   selectedOption = null;
   feedbackText.textContent = "";
   feedbackText.className = "feedback";
+  noteText.textContent = "";
+  noteText.style.display = "none";
   nextBtn.disabled = true;
   diagramArea.style.display = "none";
   diagramArea.innerHTML = "";
 
-  const q = currentQuestion();
   if (q.type === "blank" || q.type === "diagram") {
     quizScreen.insertBefore(feedbackText, actions);
   } else {
@@ -320,21 +263,8 @@ function renderQuestion() {
     hintText.textContent = "";
     hintText.style.display = "none";
   }
-  lessonName.textContent = lessonRound > 1
-    ? `Lesson ${lessonIndex + 1}: ${lessons[lessonIndex].name} (Review round ${lessonRound - 1})`
-    : `Lesson ${lessonIndex + 1}: ${lessons[lessonIndex].name}`;
 
-  lessonLabel.textContent = `${lessonIndex + 1} / ${lessons.length}`;
-  if (lessonRound === 1) {
-    questionStat.style.display = "";
-    questionLabel.textContent = `${queuePosition + 1} / ${lessonQuestionCount}`;
-  } else {
-    questionStat.style.display = "none";
-  }
-  streakLabel.textContent = streak;
-
-  const progress = lessonCompletedKeys.size / lessonQuestionCount;
-  progressBar.style.width = `${Math.max(3, progress * 100)}%`;
+  updateProgressUI();
 
   if (q.type === "diagram") {
     renderDiagramQuestion(q.diagramTargetId);
@@ -384,7 +314,7 @@ function markFeedback(correct, q) {
         btn.classList.add(correct ? "correct-selected" : "incorrect-selected");
         const resultTag = document.createElement("span");
         resultTag.className = `option-result-tag ${correct ? "ok" : "bad"}`;
-        resultTag.textContent = correct ? "✅ Correct" : "❌ Incorrect";
+        resultTag.textContent = correct ? "Correct" : "Incorrect";
         btn.appendChild(resultTag);
       }
     });
@@ -403,13 +333,13 @@ function markFeedback(correct, q) {
     feedbackText.className = "feedback bad";
   }
 }
+
 function checkAnswer() {
   if (isAnswered) return;
   const q = currentQuestion();
-  const questionIdx = currentQuestionIndex();
-  const questionKey = `${lessonIndex}:${questionIdx}`;
-  let correct = false;
+  if (!q) return;
 
+  let correct = false;
   if (q.type === "blank" || q.type === "diagram") {
     const input = document.getElementById("answerInput");
     const value = normalize(input.value);
@@ -418,7 +348,8 @@ function checkAnswer() {
       feedbackText.className = "feedback bad";
       return;
     }
-    correct = q.answer.some((candidate) => value.includes(normalize(candidate)));
+    const acceptedAnswers = Array.isArray(q.answer) ? q.answer : [q.answer];
+    correct = acceptedAnswers.some((candidate) => value.includes(normalize(candidate)));
   } else {
     if (!selectedOption) {
       feedbackText.textContent = "Choose an option first.";
@@ -430,12 +361,15 @@ function checkAnswer() {
 
   isAnswered = true;
   markFeedback(correct, q);
+  if (q.note && q.note.trim() !== "") {
+    noteText.textContent = q.note;
+    noteText.style.display = "block";
+  }
 
   if (correct) {
     streak += 1;
-    lessonCompletedKeys.add(questionIdx);
-    if (!completedQuestionKeys.has(questionKey)) {
-      completedQuestionKeys.add(questionKey);
+    if (!masteredQuestionKeys.has(q._qid)) {
+      masteredQuestionKeys.add(q._qid);
       score += 1;
     }
     if (streak > 0 && streak % 3 === 0) {
@@ -444,12 +378,11 @@ function checkAnswer() {
   } else {
     streak = 0;
     mistakes += 1;
-    if (!retryQueue.includes(questionIdx)) {
-      retryQueue.push(questionIdx);
-    }
+    const insertIndex = Math.min(currentIndex + 3, questionQueue.length);
+    questionQueue.splice(insertIndex, 0, q);
   }
 
-  streakLabel.textContent = streak;
+  updateProgressUI();
   nextBtn.disabled = false;
 
   if (q.type === "blank" || q.type === "diagram") {
@@ -458,94 +391,50 @@ function checkAnswer() {
   }
 }
 
-function advance() {
-  if (queuePosition < lessonQueue.length - 1) {
-    queuePosition += 1;
-    renderQuestion();
-    return;
-  }
-
-  if (retryQueue.length > 0) {
-    showReviewTransition();
-    return;
-  }
-
-  if (lessonIndex < lessons.length - 1) {
-    lessonIndex += 1;
-    showLessonTransition();
-    return;
-  }
-
+function showSummary() {
   progressBar.style.width = "100%";
-  summaryText.textContent = `You mastered all ${totalQuestions} questions with ${mistakes} total mistake${mistakes === 1 ? "" : "s"} along the way.`;
+  summaryText.textContent = `You answered all ${totalQuestions} questions correctly with ${mistakes} total mistake${mistakes === 1 ? "" : "s"} along the way.`;
   showScreen(summaryScreen);
 }
 
-function startLesson() {
-  lessonQuestionCount = lessons[lessonIndex].questions.length;
-  lessonQueue = Array.from({ length: lessonQuestionCount }, (_, i) => i);
-  queuePosition = 0;
-  retryQueue = [];
-  lessonRound = 1;
-  lessonCompletedKeys.clear();
-  questionStat.style.display = "";
-  showScreen(quizScreen);
+function advance() {
+  if (score >= totalQuestions) {
+    showSummary();
+    return;
+  }
+
+  currentIndex += 1;
+  if (currentIndex >= questionQueue.length) {
+    showSummary();
+    return;
+  }
   renderQuestion();
-}
-
-function startReviewRound() {
-  lessonQueue = [...retryQueue];
-  retryQueue = [];
-  queuePosition = 0;
-  lessonRound += 1;
-  questionStat.style.display = "none";
-  showScreen(quizScreen);
-  renderQuestion();
-}
-
-function showLessonTransition() {
-  lessonTransitionTitle.textContent = `Lesson ${lessonIndex + 1}: ${lessons[lessonIndex].name}`;
-  lessonTransitionText.textContent = lessonIndex === 0
-    ? "New lesson unlocked. Press begin when you're ready."
-    : "Nice work. You've completed the previous lesson and unlocked the next one.";
-  lessonContinueBtn.textContent = `Begin Lesson ${lessonIndex + 1}`;
-  showScreen(lessonTransitionScreen);
-}
-
-function showReviewTransition() {
-  reviewTitle.textContent = `Lesson ${lessonIndex + 1} Review`;
-  reviewText.textContent = `You have ${retryQueue.length} question${retryQueue.length === 1 ? "" : "s"} to fix. Review continues until all are correct.`;
-  reviewContinueBtn.textContent = lessonRound === 1 ? "Start Review" : `Start Review Round ${lessonRound}`;
-  showScreen(reviewScreen);
 }
 
 function resetAppState() {
-  lessonIndex = 0;
-  lessonQueue = [];
-  queuePosition = 0;
-  retryQueue = [];
-  lessonRound = 1;
-  lessonQuestionCount = 0;
+  questionQueue = allQuestions.map((q) => ({ ...q }));
+  currentIndex = 0;
   streak = 0;
   score = 0;
   mistakes = 0;
-  completedQuestionKeys.clear();
-  lessonCompletedKeys.clear();
+  isAnswered = false;
+  selectedOption = null;
+  masteredQuestionKeys.clear();
+
   agnFlashOverlay.classList.remove("active");
   if (agnFlashTimeoutId !== null) {
     clearTimeout(agnFlashTimeoutId);
     agnFlashTimeoutId = null;
   }
-  questionStat.style.display = "";
+
+  updateProgressUI();
   progressBar.style.width = "0%";
-  lessonLabel.textContent = `1 / ${lessons.length}`;
-  questionLabel.textContent = `1 / ${lessons[0].questions.length}`;
-  streakLabel.textContent = "0";
 }
 
-function resetSession() {
+function startQuiz() {
   resetAppState();
-  showLessonTransition();
+  showScreen(quizScreen);
+  renderQuestion();
 }
 
 function resetToIntro() {
@@ -553,9 +442,7 @@ function resetToIntro() {
   showScreen(introScreen);
 }
 
-startBtn.addEventListener("click", resetSession);
-lessonContinueBtn.addEventListener("click", startLesson);
-reviewContinueBtn.addEventListener("click", startReviewRound);
+startBtn.addEventListener("click", startQuiz);
 restartBtn.addEventListener("click", resetToIntro);
 homeBtn.addEventListener("click", resetToIntro);
 checkBtn.addEventListener("click", checkAnswer);
@@ -576,3 +463,7 @@ document.addEventListener("keydown", (event) => {
     checkAnswer();
   }
 });
+
+resetAppState();
+showScreen(introScreen);
+

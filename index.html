@@ -10,10 +10,9 @@
   <main class="app">
     <header class="top-bar card">
       <h1><button id="homeBtn" class="home-btn" type="button">AGN-Lingo</button></h1>
-      <p class="subtitle">Instead of learning a language, you can learn about Active Galactic Nuclei!</p>
+      <!-- <p class="subtitle">Instead of learning a language, you can learn about Active Galactic Nuclei!</p> -->
       <div class="stats-row">
-        <div class="stat"><span>Lesson</span><strong id="lessonLabel">1 / 2</strong></div>
-        <div class="stat"><span>Question</span><strong id="questionLabel">1 / 10</strong></div>
+        <div class="stat"><span>Correct</span><strong id="questionLabel">0 / 0</strong></div>
         <div class="stat"><span>Streak</span><strong id="streakLabel">0</strong></div>
       </div>
       <div class="progress-wrap">
@@ -22,47 +21,34 @@
     </header>
 
     <section id="introScreen" class="card screen active">
-      <h2>Welcome!</h2>
+      <h2>Welcome to AGN-Lingo!</h2>
       <p>
-        You will complete <strong>2 short AGN lessons</strong> through fill-in-the-blank prompts, quick concept checks,
-        and sentence completions.
+        There exist many quiz-based mobile apps that can help you learn a language from scratch. Fewer apps exist to learn about AGN physics.
       </p>
-      <ul>
-        <li>Goal: learn the core AGN vocabulary and ideas</li>
-        <li>Estimated time: <strong>5–10 minutes</strong></li>
-        <li>No prior astronomy required!</li>
-      </ul>
+      <p>
+        In AGN-Lingo, you will learn about the vocabulary and key concepts of Active Galactic Nuclei.
+        This quiz should take around 5-10 minutes to complete.
+        No prior astronomy knowledge is required, but some understanding of physics might help.
+      </p>
       <button id="startBtn" class="btn btn-primary">Start</button>
     </section>
 
     <section id="homeModelCard" class="card home-model-card">
-      <h2>AGN diagram (not to scale!)</h2>
+      <h2>Diagram of an AGN (not to scale!)</h2>
       <img
         class="home-model-image"
         src="agn model drawing - annotated - white text.png"
         alt="Annotated AGN model diagram" />
     </section>
 
-    <section id="lessonTransitionScreen" class="card screen">
-      <h2 id="lessonTransitionTitle"></h2>
-      <p id="lessonTransitionText"></p>
-      <button id="lessonContinueBtn" class="btn btn-primary">Begin Lesson</button>
-    </section>
-
-    <section id="reviewScreen" class="card screen">
-      <h2 id="reviewTitle"></h2>
-      <p id="reviewText"></p>
-      <button id="reviewContinueBtn" class="btn btn-primary">Start Review</button>
-    </section>
-
     <section id="quizScreen" class="card screen" aria-live="polite">
-      <p id="lessonName" class="lesson-name"></p>
       <div class="pill" id="typeBadge">Fill in the blank</div>
       <h2 id="promptText"></h2>
       <p id="hintText" class="hint"></p>
 
       <div id="diagramArea" class="diagram-area"></div>
       <div id="inputArea"></div>
+      <p id="noteText" class="note"></p>
 
       <div class="actions">
         <button id="checkBtn" class="btn btn-primary">Check</button>
