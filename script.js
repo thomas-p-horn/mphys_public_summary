@@ -62,7 +62,7 @@
         prompt: "In this AGN diagram, what term is hidden by the question marks?",
         hint: "Depending on our viewing angle, this donut-shaped structure can hide the centre of the AGN, drastically changing what we are able to see.",
         answer: ["Dusty Torus", "Dust Torus", "Obscuring Torus", "Torus"],
-        diagramTargetId: "text13"
+        diagramTargetId: "text12"
       },
       {
         type: "multiple",
