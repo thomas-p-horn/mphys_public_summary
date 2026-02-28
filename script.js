@@ -101,7 +101,7 @@
       {
         type: "multiple",
         badge: "True or False",
-        prompt: "Changes in quasar luminosity are usually only observed for a small portion of the spectrum, while other parts remain constant over time.",
+        prompt: "True or False?\nChanges in quasar luminosity are usually only observed for a small portion of the spectrum, while other parts remain constant over time.",
         answer: "False, we observe variability across all wavelengths.",
         options: ["True, we only observe variability in the UV part of the spectrum.", "False, we observe variability across all wavelengths."]
       },
@@ -117,7 +117,7 @@
         type: "multiple",
         badge: "Pick one",
         prompt: "From which element are we likely to observe variability on short timescales?",
-        hint: "Due to their size, it takes a long time for energy to move around in AGN. As a result, larger structures will take longer to change in luminosity.",
+        hint: "Due to their size, it takes a long time for energy to move around in AGN. As a result, smaller structures will be able to change luminosity quicker.",
         answer: "Accretion disk",
         options: ["Accretion disk", "Dusty torus", "Narrow line region"]
 
