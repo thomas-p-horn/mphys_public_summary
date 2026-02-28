@@ -5,6 +5,14 @@ const lessons = [
       {
         type: "multiple",
         badge: "Pick one",
+        prompt: "What does AGN stand for?",
+        hint: "This may or may not be a trick question.",
+        answer: "Active Galactic Nucleus",
+        options: ["Active Galactic Nucleus", "Aberdeen's Greatest Neurologist", "Absolutely Gigantic Neptune"]
+      },
+      {
+        type: "multiple",
+        badge: "Pick one",
         prompt: "An AGN is powered by matter falling onto a supermassive ______ hole.",
         hint: "Think of the central engine.",
         answer: "black",
