@@ -50,11 +50,19 @@
         note: "Initially mistaken as stars, these objects were dubbed \"Quasi-Stellar Objects\", later shortened to \"Quasars\"."
       },
       {
+        type: "multiple",
+        badge: "Pick one",
+        prompt: "What process typically causes black holes to grow bigger?",
+        answer: "Accretion of gas",
+        options: ["Redshift", "Accretion of gas", "Gravitational lensing"],
+        note: "Infalling matter provides the mass needed for the black hole to grow over time."
+      },
+      {
         type: "diagram",
         badge: "Diagram label",
         prompt: "In this AGN diagram, what term is hidden by the question marks?",
         hint: "This part ejects matter with such speeds, we have to take relativistic effects into account.",
-        answer: ["Accretion Disk", "Accretion Disc"],
+        answer: ["Relativistic jet", "Relativistic jets", "Jet", "Jets"],
         diagramTargetId: "text8"
       },
       {
@@ -70,7 +78,8 @@
         badge: "Pick one",
         prompt: "What kind of light does an AGN emit?",
         answer: "All of the above",
-        options: ["Ultraviolet", "Visible", "X-Ray", "All of the above"]
+        options: ["Ultraviolet", "Visible", "X-Ray", "All of the above"],
+        note: "AGN emit light across the entire electromagnetic spectrum."
       },
       {
         type: "diagram",
@@ -92,7 +101,7 @@
       {
         type: "multiple",
         badge: "Pick one",
-        prompt: "The Eddington limit is the maximum rate at which a black hole can accrete matter. It is caused by an equilibrium between gravitational energy (pulling matter in) and ______ (pushing matter out).",
+        prompt: "The Eddington limit is the maximum luminosity a black hole can have. It is caused by an equilibrium between gravitational energy (pulling matter in) and ______ (pushing matter out). This limits how much material can accrete and so how bright the AGN can get",
         answer: "Radiation pressure",
         options: ["The Lorentz force", "Electron degeneracy", "Radiation pressure"],
         note: "An AGN can emit so much energy through its radiation that the surrounding gas is pushed outwards."
@@ -109,8 +118,8 @@
       {
         type: "multiple",
         badge: "Pick one",
-        prompt: "Quasars (very bright AGN) are known to change in luminosity over time. What's the shortest timescale over which we can observe these changes?",
-        hint: "How often can we measure a quasar's brightness and see a measurable change?",
+        prompt: "Quasars (very bright AGN) are known to change in luminosity over time. What's typically the shortest timescale over which we observe these changes?",
+        // hint: "How often can we measure a quasar's brightness and see a measurable change?",
         answer: "Days",
         options: ["Days", "Months", "Years"]
       },
