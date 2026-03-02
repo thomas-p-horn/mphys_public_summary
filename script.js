@@ -34,6 +34,14 @@
         note: "Some AGN appear as bright as nearby stars, despite being thousands of times farther away!"
       },
       {
+        type: "multiple",
+        badge: "Pick one",
+        prompt: "What kind of light does an AGN emit?",
+        answer: "All of the above",
+        options: ["Ultraviolet", "Visible", "X-Ray", "All of the above"],
+        note: "AGN emit light across the entire electromagnetic spectrum."
+      },
+      {
         type: "diagram",
         badge: "Diagram label",
         prompt: "In this AGN diagram, what term is hidden by the question marks?",
@@ -68,18 +76,10 @@
       {
         type: "multiple",
         badge: "Pick one",
-        prompt: "What do we call AGN whose jets are pointed almost directly toward Earth?",
+        prompt: "What do we call AGN whose jets are pointed almost directly towards Earth?",
         answer: "Blazars",
         options: ["Seyfert galaxies", "Radio-quiet quasars", "Blazars"],
-        note: "When a relativistic jet is aligned close to our line of sight, relativistic beaming makes the AGN appear extremely bright and variable."
-      },
-      {
-        type: "multiple",
-        badge: "Pick one",
-        prompt: "What kind of light does an AGN emit?",
-        answer: "All of the above",
-        options: ["Ultraviolet", "Visible", "X-Ray", "All of the above"],
-        note: "AGN emit light across the entire electromagnetic spectrum."
+        note: "When a relativistic jet is aligned close to our line of sight, relativistic beaming makes the AGN appear extremely bright."
       },
       {
         type: "diagram",
@@ -92,7 +92,7 @@
       {
         type: "multiple",
         badge: "Pick one",
-        prompt: "What is the main source of energy for an AGN",
+        prompt: "What is the main source of energy for an AGN?",
         hint: "Which force does a supermassive black hole create?",
         answer: "Gravitational potential energy",
         options: ["Nuclear fusion reactions", "Dark matter annihilation", "Gravitational potential energy"],
@@ -101,7 +101,7 @@
       {
         type: "multiple",
         badge: "Pick one",
-        prompt: "The Eddington limit is the maximum luminosity a black hole can have. It is caused by an equilibrium between gravitational energy (pulling matter in) and ______ (pushing matter out). This limits how much material can accrete and so how bright the AGN can get",
+        prompt: "The Eddington limit is the maximum luminosity a black hole can have. It is caused by an equilibrium between gravitational energy (pulling matter in) and ______ (pushing matter out). This limits how fast material can accrete and so how bright the AGN can get.",
         answer: "Radiation pressure",
         options: ["The Lorentz force", "Electron degeneracy", "Radiation pressure"],
         note: "An AGN can emit so much energy through its radiation that the surrounding gas is pushed outwards."
@@ -111,8 +111,8 @@
         badge: "Pick one",
         prompt: "A higher accretion rate usually means: ",
         hint: "Assume all else equal.",
-        answer: "Higher AGN luminosity",
-        options: ["No emission lines", "Higher AGN luminosity", "No black hole growth"],
+        answer: "Higher luminosity",
+        options: ["No emission lines", "Higher luminosity", "No black hole growth"],
         note: "If more matter is falling in towards the black hole, more energy is released and more light is emitted."
       },
       {
