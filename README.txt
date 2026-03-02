@@ -5,3 +5,8 @@ Its goal is to summarise the topic of my project for a non-specialist audience.
 
 Access the website here:
 https://thomas-p-horn.github.io/mphys_public_summary/
+
+
+Note: Some .svg manipulation seems to break when running the site locally,
+so diagram-based questions are effectively impossible unless you already know the answer.
+Usability through GitHub Pages (link above) is unaffected.
